@@ -1,19 +1,18 @@
 {% extends 'base.html' %}
+
 {% block style %}
 {% endblock %}
 
 {% block content %}
 
 <div class="container">
-    {% if images %}
-    {% for image in images %}
+    {% if image %}
     <div class="row">
         <div class="col-md-8 col-sm-12">
             <div class="card" style="margin-top: 30px;">
                 <div class="card-header" style="font-weight: bolder;">
                     {{ image.user }}
                 </div>
-                <img src="{{image.image.url}}" class="card-img-top" alt="Image" style="width: 100%; height: 400px;">
                 <div class="card-body">
                     <p>{{ image.caption }} </p>
                     <p>
@@ -26,15 +25,23 @@
                         </span>
                         <span>{{ image.likes }}</span>
                     </p>
-                    <p>
-                        <small><a class="nav-link" href="{% url 'comment' image.id %}">Comment</a></small>    
-                    </p>
+                    <form class="navbar-form" action="/comment/{{image.id}}" method="POST">
+                        {% csrf_token %}
+                        <div class="input-group">
+                            <input type="text" class="form-control" placeholder="Comment " name="comment">
+                        </div>
+                    </form>
                 </div>
             </div>
+            {% if comments %}
+            {% for comment in comments %}
+                <p>
+                    <span style="font-weight: bolder;">{{ comment.user }}: </span><small>{{comment.comment}}</small>
+                </p>
+            {% endfor %}
+            {% endif %}
         </div>
     </div>
-    
-    {% endfor %}
     {% endif %}
 </div>
 

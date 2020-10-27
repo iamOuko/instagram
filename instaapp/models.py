@@ -1,6 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import User
 from tinymce.models import HTMLField
+from cloudinary.models import CloudinaryField
 
 # Create your models here.
 class Image(models.Model):
@@ -8,7 +9,7 @@ class Image(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     caption = HTMLField()
     likes = models.IntegerField(default=0)
-    image = models.ImageField(upload_to = 'images/')
+    image = CloudinaryField('image')
 
 
 
@@ -25,6 +26,11 @@ class Image(models.Model):
     def update_caption(cls,caption):
         caption=cls.objects.filter(caption=caption).update(caption=caption)
         return caption
+
+    @classmethod
+    def search_user(cls,search_term):
+        images = cls.objects.filter(user__username=search_term)
+        return images
 
 
 class Comment(models.Model):
