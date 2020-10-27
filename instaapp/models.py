@@ -5,7 +5,7 @@ from cloudinary.models import CloudinaryField
 
 # Create your models here.
 class Image(models.Model):
-    name = models.CharField(max_length =30)
+    name = models.CharField(max_length =255)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     caption = HTMLField()
     likes = models.IntegerField(default=0)
